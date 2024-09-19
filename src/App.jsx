@@ -21,8 +21,8 @@ export const App = () => {
   return (
     <main className="section container">
       <h1 className="title is-flex is-align-items-center">
-        {selectedGood ? `${selectedGood} is selected` : `No goods selected`}
-        <h1 className="title is-flex is-align-items-center">
+        <>
+          {selectedGood ? `${selectedGood} is selected` : `No goods selected`}
           {selectedGood && (
             <button
               data-cy="ClearButton"
@@ -31,7 +31,7 @@ export const App = () => {
               onClick={() => setSelectedGood('')}
             />
           )}
-        </h1>
+        </>
       </h1>
 
       <table className="table">
@@ -41,7 +41,7 @@ export const App = () => {
               data-cy="Good"
               key={good}
               className={
-                selectedGood === good ? 'has-background-success-light' : ''
+                selectedGood === good && 'has-background-success-light'
               }
             >
               <td>
