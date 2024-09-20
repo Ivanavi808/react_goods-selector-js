@@ -1,6 +1,7 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
 import { useState } from 'react';
+import cn from 'classnames';
 
 export const goods = [
   'Dumplings',
@@ -17,6 +18,10 @@ export const goods = [
 
 export const App = () => {
   const [selectedGood, setSelectedGood] = useState('Jam');
+
+  const makeChoice = good => {
+    setSelectedGood(someGood => (someGood === good ? '' : good));
+  };
 
   return (
     <main className="section container">
@@ -36,49 +41,40 @@ export const App = () => {
 
       <table className="table">
         <tbody>
-          {goods.map(good => (
-            <tr
-              data-cy="Good"
-              key={good}
-              className={
-                selectedGood === good && 'has-background-success-light'
-              }
-            >
-              <td>
-                {selectedGood === good ? (
-                  <button
-                    data-cy="RemoveButton"
-                    type="button"
-                    className="button is-info"
-                    onClick={() => setSelectedGood('')}
-                  >
-                    -
-                  </button>
-                ) : (
-                  <button
-                    data-cy="AddButton"
-                    type="button"
-                    className="button"
-                    onClick={() => setSelectedGood(good)}
-                  >
-                    +
-                  </button>
-                )}
-              </td>
+          {goods.map(good => {
+            const isSelected = selectedGood === good;
 
-              <td
-                data-cy="GoodTitle"
-                className="is-vcentered"
-                style={
-                  selectedGood === good
-                    ? { color: 'black' }
-                    : { color: 'white' }
-                }
+            return (
+              <tr
+                data-cy="Good"
+                key={good}
+                className={cn({
+                  'has-background-success-light': isSelected,
+                })}
               >
-                {good}
-              </td>
-            </tr>
-          ))}
+                <td>
+                  <button
+                    data-cy={isSelected ? 'RemoveButton' : 'AddButton'}
+                    type="button"
+                    className={cn('button', {
+                      'is-info': isSelected,
+                    })}
+                    onClick={() => makeChoice(good)}
+                  >
+                    {isSelected ? '-' : '+'}
+                  </button>
+                </td>
+
+                <td
+                  data-cy="GoodTitle"
+                  className="is-vcentered"
+                  style={isSelected ? { color: 'black' } : { color: 'white' }}
+                >
+                  {good}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </main>
